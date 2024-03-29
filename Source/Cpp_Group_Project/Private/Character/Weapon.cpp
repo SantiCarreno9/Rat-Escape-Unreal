@@ -39,6 +39,7 @@ void AWeapon::Fire()
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
 	AProjectile* ProjectileInstance = World->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
-	//if(ProjectileInstance)
+	if (ProjectileInstance != nullptr)
+		ProjectileInstance->FireInDirection(ProjectileSpawnPoint->GetForwardVector());
 }
 

@@ -16,16 +16,16 @@ class CPP_GROUP_PROJECT_API ACustomCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	//------------VARIABLES-----------------
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	FName HeadBoneName = TEXT("Head");
+
 	//------------PROPERTIES-----------------
 	// Projectile class to spawn.
 
 	// FPS camera.
-	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = true))
-	TObjectPtr<UCameraComponent> CameraComponent;
-
-	// First-person mesh (arms), visible only to the owning player.
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh, meta = (AllowPrivateAccess = true))
-	TObjectPtr<USkeletalMeshComponent> CharacterMesh;	
+	UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+	TObjectPtr<UCameraComponent> CameraComponent;	
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TObjectPtr<UChildActorComponent> WeaponActor;
@@ -51,7 +51,7 @@ public:
 	void Move(FVector2D Value);
 
 	// Rotates the camera
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent)
 	void Look(FVector2D Value);
 
 	// Function that handles firing projectiles.
