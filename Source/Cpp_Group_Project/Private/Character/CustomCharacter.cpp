@@ -98,6 +98,7 @@ void ACustomCharacter::ChangeToFirstPersonPerspective()
 	bIsOnThirdPersonView = false;
 	FPSCameraComponent->SetActive(!bIsOnThirdPersonView);
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
+	GetMesh()->HideBoneByName(HeadBoneName, EPhysBodyOp::PBO_None);
 	//PlayCameraTransition(Cast<AActor>(FPSCameraComponent));
 	/*APlayerController* AController = GetLocalViewingPlayerController();
 	UE_LOG(LogTemp, Warning, TEXT("Try to get controller"));
@@ -113,6 +114,7 @@ void ACustomCharacter::ChangeToThirdPersonPerspective()
 	bIsOnThirdPersonView = true;
 	FPSCameraComponent->SetActive(!bIsOnThirdPersonView);
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
+	GetMesh()->UnHideBoneByName(HeadBoneName);
 	//PlayCameraTransition(Cast<AActor>(TPCameraComponent));
 	/*AActor* Camera = Cast<AActor>(TPCameraComponent);
 	if (Camera)
