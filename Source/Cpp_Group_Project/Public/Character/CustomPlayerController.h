@@ -30,6 +30,12 @@ class CPP_GROUP_PROJECT_API ACustomPlayerController : public APlayerController
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> FireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> SwitchCameraAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> SwitchModeAction;
+
 	TObjectPtr<ACustomCharacter> Character;
 
 	UFUNCTION()
@@ -40,6 +46,12 @@ class CPP_GROUP_PROJECT_API ACustomPlayerController : public APlayerController
 
 	UFUNCTION()
 	void Fire(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void SwitchCamera(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void SwitchMode(const FInputActionValue& Value);
 
 protected:
 

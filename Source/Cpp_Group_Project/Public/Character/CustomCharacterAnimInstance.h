@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "CustomCharacterAnimInstance.generated.h"
 
+class ACustomCharacter;
 /**
  * 
  */
@@ -14,12 +15,21 @@ class CPP_GROUP_PROJECT_API UCustomCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-	TObjectPtr<ACharacter> Character;
+	TObjectPtr<ACustomCharacter> Character;	
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly)
 	float Pitch;
+
+	UPROPERTY(BlueprintReadOnly)
+	float Speed;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsOnAttackMode;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsFalling;
 
 public:
 

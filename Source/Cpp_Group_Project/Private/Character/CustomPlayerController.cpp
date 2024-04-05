@@ -31,6 +31,10 @@ void ACustomPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACustomPlayerController::Look);
 		//Fire Bindings
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &ACustomPlayerController::Fire);
+		//Camera Bindings
+		EnhancedInputComponent->BindAction(SwitchCameraAction, ETriggerEvent::Started, this, &ACustomPlayerController::SwitchCamera);
+		//Mode Bindings
+		EnhancedInputComponent->BindAction(SwitchModeAction, ETriggerEvent::Started, this, &ACustomPlayerController::SwitchMode);
 	}
 }
 
@@ -50,4 +54,16 @@ void ACustomPlayerController::Fire(const FInputActionValue& Value)
 {
 	if (Character != nullptr)
 		Character->Fire();
+}
+
+void ACustomPlayerController::SwitchCamera(const FInputActionValue& Value)
+{
+	if (Character != nullptr)
+		Character->SwitchCamera();
+}
+
+void ACustomPlayerController::SwitchMode(const FInputActionValue& Value)
+{
+	if (Character != nullptr)
+		Character->SwitchMode();
 }
