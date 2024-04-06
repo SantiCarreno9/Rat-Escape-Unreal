@@ -7,6 +7,8 @@
 #include "Character/Weapon.h"
 #include "Components/ChildActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Character/CharacterHUD.h"
+#include "General/CustomGameModeBase.h"
 
 // Sets default values
 ACustomCharacter::ACustomCharacter()
@@ -34,7 +36,7 @@ ACustomCharacter::ACustomCharacter()
 	TPCameraBoom->bUsePawnControlRotation = true;
 	TPCameraBoom->TargetArmLength = 300.f;
 	TPCameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	//TPCameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
+
 
 	//// Create a camera...
 	TPCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
@@ -45,26 +47,22 @@ ACustomCharacter::ACustomCharacter()
 	//// Create dummy weapon
 	BackWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackWeapon"));
 	BackWeapon->SetupAttachment(GetMesh(), TEXT("b_BackWeaponSocket"));
-
 }
+
+
 
 // Called when the game starts or when spawned
 void ACustomCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	Weapon = Cast<AWeapon>(WeaponActor->GetChildActor());
-	PlayerController = Cast<APlayerController>(Controller);
 	SwitchToNormalMode();
 }
 
+#pragma region Player Input
+
 void ACustomCharacter::Move(FVector2D Value)
 {
-	// Find out which way is "forward" and record that the player wants to move that way.
-	//FVector ForwardDirection = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-	//FVector RightDirection = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	//AddMovementInput(ForwardDirection, Value.Y);
-	//AddMovementInput(RightDirection, Value.X);
-
 	// find out which way is forward
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -78,7 +76,6 @@ void ACustomCharacter::Move(FVector2D Value)
 	// add movement 
 	AddMovementInput(ForwardDirection, Value.Y);
 	AddMovementInput(RightDirection, Value.X);
-	UE_LOG(LogTemp, Warning, TEXT("X: %f - Y: %f"), Value.X, Value.Y);
 }
 
 void ACustomCharacter::Look_Implementation(FVector2D Value)
@@ -93,47 +90,47 @@ void ACustomCharacter::Fire()
 		Weapon->Fire();
 }
 
-void ACustomCharacter::ChangeToFirstPersonPerspective()
+#pragma endregion
+
+#pragma region Perspective
+
+void ACustomCharacter::SwitchCamera()
+{
+	if (bIsOnThirdPersonView)
+		SwitchToFirstPersonPerspective();
+	else SwitchToThirdPersonPerspective();
+}
+
+void ACustomCharacter::SwitchToFirstPersonPerspective()
 {
 	bIsOnThirdPersonView = false;
 	FPSCameraComponent->SetActive(!bIsOnThirdPersonView);
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
 	GetMesh()->HideBoneByName(HeadBoneName, EPhysBodyOp::PBO_None);
-	//PlayCameraTransition(Cast<AActor>(FPSCameraComponent));
-	/*APlayerController* AController = GetLocalViewingPlayerController();
-	UE_LOG(LogTemp, Warning, TEXT("Try to get controller"));
-	if (AController != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Controller Found"));
-		AController->SetViewTargetWithBlend(Cast<AActor>(FPSCameraComponent), 1.0f, EViewTargetBlendFunction::VTBlend_Linear);
-	}*/
+	if (bIsOnAttackMode && CharacterHUD != nullptr)
+		CharacterHUD->ShowFPSHUD();
 }
 
-void ACustomCharacter::ChangeToThirdPersonPerspective()
+void ACustomCharacter::SwitchToThirdPersonPerspective()
 {
 	bIsOnThirdPersonView = true;
 	FPSCameraComponent->SetActive(!bIsOnThirdPersonView);
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
 	GetMesh()->UnHideBoneByName(HeadBoneName);
+	if (bIsOnAttackMode && CharacterHUD != nullptr)
+		CharacterHUD->HideFPSHUD();
 	//PlayCameraTransition(Cast<AActor>(TPCameraComponent));
-	/*AActor* Camera = Cast<AActor>(TPCameraComponent);
-	if (Camera)
-		PlayCameraTransition(Camera);*/
-		//PlayCameraTransition(TPCameraComponent->GetAttachParentActor());
-		/*APlayerController* AController = GetLocalViewingPlayerController();
-		//UE_LOG(LogTemp, Warning, TEXT("Try to get controller"));
-		if (AController != nullptr)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Controller Found"));
-			AController->SetViewTargetWithBlend(Cast<AActor>(TPCameraComponent), 1.0f, EViewTargetBlendFunction::VTBlend_Linear);
-		}*/
-}
-
-void ACustomCharacter::SwitchCamera()
-{
-	if (bIsOnThirdPersonView)
-		ChangeToFirstPersonPerspective();
-	else ChangeToThirdPersonPerspective();
+	//AActor* Camera = Cast<AActor>(TPCameraComponent);
+	//if (Camera)
+	//	PlayCameraTransition(Camera);
+	//	//PlayCameraTransition(TPCameraComponent->GetAttachParentActor());
+	//	APlayerController* AController = GetLocalViewingPlayerController();
+	//	//UE_LOG(LogTemp, Warning, TEXT("Try to get controller"));
+	//	if (AController != nullptr)
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("Controller Found"));
+	//		AController->SetViewTargetWithBlend(Cast<AActor>(TPCameraComponent), 1.0f, EViewTargetBlendFunction::VTBlend_Linear);
+	//	}
 }
 
 void ACustomCharacter::PlayCameraTransition(AActor* TargetCamera)
@@ -153,6 +150,16 @@ void ACustomCharacter::PlayCameraTransition(AActor* TargetCamera)
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, CameraTransitionTime, false);
 }
 
+void ACustomCharacter::Falling()
+{
+	if (!bIsOnThirdPersonView)
+		SwitchToThirdPersonPerspective();
+}
+
+#pragma endregion
+
+
+#pragma region Mode
 
 void ACustomCharacter::SwitchMode()
 {
@@ -167,6 +174,9 @@ void ACustomCharacter::SwitchToAttackMode()
 	BackWeapon->SetVisibility(false);
 	if (Weapon != nullptr)
 		Weapon->SetActorHiddenInGame(false);
+	if (!bIsOnThirdPersonView && CharacterHUD != nullptr)
+		CharacterHUD->ShowFPSHUD();
+
 }
 
 void ACustomCharacter::SwitchToNormalMode()
@@ -175,4 +185,27 @@ void ACustomCharacter::SwitchToNormalMode()
 	BackWeapon->SetVisibility(true);
 	if (Weapon != nullptr)
 		Weapon->SetActorHiddenInGame(true);
+	if (!bIsOnThirdPersonView && CharacterHUD != nullptr)
+		CharacterHUD->HideFPSHUD();
+}
+
+void ACustomCharacter::SetControllerRef(APlayerController* PController)
+{
+	PlayerController = PController;
+	CharacterHUD = Cast<ACharacterHUD>(PlayerController->GetHUD());
+}
+
+#pragma endregion
+
+
+void ACustomCharacter::Destroyed()
+{
+	if (UWorld* World = GetWorld())
+	{
+		if (ACustomGameModeBase* GameMode = Cast<ACustomGameModeBase>(World->GetAuthGameMode()))
+		{
+			GameMode->GetOnPlayerDied().Broadcast(this);
+		}
+	}
+	Super::Destroyed();
 }

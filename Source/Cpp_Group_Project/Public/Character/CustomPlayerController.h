@@ -57,6 +57,9 @@ protected:
 
 	virtual void SetupInputComponent() override;
 
+	virtual void OnPossess(APawn* aPawn) override;
+
+	virtual void OnUnPossess() override;
 	// To add mapping context
 	virtual void BeginPlay() override;
 };

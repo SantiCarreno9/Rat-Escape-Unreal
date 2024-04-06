@@ -9,8 +9,6 @@
 
 void ACustomPlayerController::BeginPlay()
 {
-	Character = Cast<ACustomCharacter>(GetPawn());
-
 	//Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
@@ -36,6 +34,19 @@ void ACustomPlayerController::SetupInputComponent()
 		//Mode Bindings
 		EnhancedInputComponent->BindAction(SwitchModeAction, ETriggerEvent::Started, this, &ACustomPlayerController::SwitchMode);
 	}
+}
+
+void ACustomPlayerController::OnPossess(APawn* aPawn)
+{
+	Super::OnPossess(aPawn);
+	Character = Cast<ACustomCharacter>(aPawn);
+	Character->SetControllerRef(this);
+}
+
+void ACustomPlayerController::OnUnPossess()
+{
+	Super::OnUnPossess();
+	Character = nullptr;
 }
 
 void ACustomPlayerController::Move(const FInputActionValue& Value)

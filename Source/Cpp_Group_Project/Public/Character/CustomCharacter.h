@@ -11,6 +11,7 @@ class USkeletalMeshComponent;
 class USpringArmComponent;
 class AProjectile;
 class AWeapon;
+class ACharacterHUD;
 
 UCLASS()
 class CPP_GROUP_PROJECT_API ACustomCharacter : public ACharacter
@@ -55,6 +56,8 @@ class CPP_GROUP_PROJECT_API ACustomCharacter : public ACharacter
 
 	TObjectPtr<APlayerController> PlayerController;	
 
+	TObjectPtr<ACharacterHUD> CharacterHUD;
+
 	void PlayCameraTransition(AActor* TargetCamera);
 
 
@@ -62,9 +65,14 @@ public:
 	// Sets default values for this character's properties
 	ACustomCharacter();
 
+	virtual void Falling() override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	//Called when our Actor is destroyed during Gameplay.
+	virtual void Destroyed();
 
 public:
 
@@ -84,9 +92,9 @@ public:
 	UFUNCTION()
 	void Fire();		
 
-	void ChangeToFirstPersonPerspective();
+	void SwitchToFirstPersonPerspective();
 	
-	void ChangeToThirdPersonPerspective();
+	void SwitchToThirdPersonPerspective();
 
 	void SwitchCamera();
 
@@ -95,4 +103,6 @@ public:
 	void SwitchToAttackMode();
 
 	void SwitchToNormalMode();
+
+	void SetControllerRef(APlayerController* PController);
 };
