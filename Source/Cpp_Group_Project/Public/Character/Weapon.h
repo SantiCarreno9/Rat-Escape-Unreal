@@ -21,6 +21,9 @@ class CPP_GROUP_PROJECT_API AWeapon : public AActor
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
 	TSubclassOf<AProjectile> ProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = Sound)
+	TObjectPtr<USoundBase> SoundEffect;
+
 public:
 	// Sets default values for this actor's properties
 	AWeapon();

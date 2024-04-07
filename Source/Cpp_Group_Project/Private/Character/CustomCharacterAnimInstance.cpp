@@ -11,6 +11,8 @@ UCustomCharacterAnimInstance::UCustomCharacterAnimInstance()
 	Pitch = 0;
 	Speed = 0;
 	bIsFalling = false;
+	bIsOnAttackMode = false;
+	bIsOnThirdPersonView = true;
 }
 
 void UCustomCharacterAnimInstance::NativeInitializeAnimation()
@@ -28,15 +30,22 @@ void UCustomCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	bIsFalling = Character->GetCharacterMovement()->IsFalling();
 
-	if (!bIsFalling)
-		Speed = Character->GetVelocity().Length();
-	else Speed = 0;
-
-	bIsOnAttackMode = Character->GetIsOnAttackMode();
-
-	if (bIsOnAttackMode)
+	if (bIsFalling)
 	{
-		const FRotator DeltaRotator = Character->GetBaseAimRotation() - Character->GetActorRotation();
-		Pitch = DeltaRotator.Pitch;
+		Speed = 0;
+		return;
 	}
+
+	bIsOnThirdPersonView = Character->GetIsOnThirdPersonView();
+	bIsOnAttackMode = Character->GetIsOnAttackMode();
+	Speed = Character->GetVelocity().Length();	
+
+	if (bIsOnThirdPersonView)
+	{
+		Pitch = 0;
+		return;
+	}		
+
+	const FRotator DeltaRotator = Character->GetBaseAimRotation() - Character->GetActorRotation();
+	Pitch = DeltaRotator.Pitch;
 }

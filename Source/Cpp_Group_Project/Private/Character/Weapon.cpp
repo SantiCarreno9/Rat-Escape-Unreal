@@ -3,6 +3,7 @@
 
 #include "Character/Weapon.h"
 #include "Character/Projectile.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -39,5 +40,8 @@ void AWeapon::Fire()
 	AProjectile* ProjectileInstance = World->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
 	if (ProjectileInstance != nullptr)
 		ProjectileInstance->FireInDirection(ProjectileSpawnPoint->GetForwardVector());
+
+	if (SoundEffect != nullptr)
+		UGameplayStatics::PlaySound2D(GetWorld(), SoundEffect);
 }
 

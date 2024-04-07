@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsFalling;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsOnThirdPersonView;
+
 public:
 
 	UCustomCharacterAnimInstance();

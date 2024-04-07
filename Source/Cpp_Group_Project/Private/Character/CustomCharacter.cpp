@@ -46,7 +46,7 @@ ACustomCharacter::ACustomCharacter()
 
 	//// Create dummy weapon
 	BackWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackWeapon"));
-	BackWeapon->SetupAttachment(GetMesh(), TEXT("b_BackWeaponSocket"));
+	BackWeapon->SetupAttachment(GetMesh(), TEXT("b_BackWeaponSocket"));	
 }
 
 
@@ -78,7 +78,7 @@ void ACustomCharacter::Move(FVector2D Value)
 	AddMovementInput(RightDirection, Value.X);
 }
 
-void ACustomCharacter::Look_Implementation(FVector2D Value)
+void ACustomCharacter::Look(FVector2D Value)
 {
 	AddControllerYawInput(Value.X);
 	AddControllerPitchInput(Value.Y);
@@ -118,36 +118,7 @@ void ACustomCharacter::SwitchToThirdPersonPerspective()
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
 	GetMesh()->UnHideBoneByName(HeadBoneName);
 	if (bIsOnAttackMode && CharacterHUD != nullptr)
-		CharacterHUD->HideFPSHUD();
-	//PlayCameraTransition(Cast<AActor>(TPCameraComponent));
-	//AActor* Camera = Cast<AActor>(TPCameraComponent);
-	//if (Camera)
-	//	PlayCameraTransition(Camera);
-	//	//PlayCameraTransition(TPCameraComponent->GetAttachParentActor());
-	//	APlayerController* AController = GetLocalViewingPlayerController();
-	//	//UE_LOG(LogTemp, Warning, TEXT("Try to get controller"));
-	//	if (AController != nullptr)
-	//	{
-	//		UE_LOG(LogTemp, Warning, TEXT("Controller Found"));
-	//		AController->SetViewTargetWithBlend(Cast<AActor>(TPCameraComponent), 1.0f, EViewTargetBlendFunction::VTBlend_Linear);
-	//	}
-}
-
-void ACustomCharacter::PlayCameraTransition(AActor* TargetCamera)
-{
-	if (PlayerController == nullptr)
-		return;
-
-	PlayerController->SetViewTargetWithBlend(TargetCamera, CameraTransitionTime, EViewTargetBlendFunction::VTBlend_Linear);
-
-	TFunction<void()> OnBlendCompleteLambda = [this]() {
-		FPSCameraComponent->SetActive(!bIsOnThirdPersonView);
-		TPCameraComponent->SetActive(bIsOnThirdPersonView);
-		};
-	FTimerHandle TimerHandle;
-	FTimerDelegate TimerDelegate;
-	TimerDelegate.BindLambda(OnBlendCompleteLambda);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, CameraTransitionTime, false);
+		CharacterHUD->HideFPSHUD();	
 }
 
 void ACustomCharacter::Falling()
