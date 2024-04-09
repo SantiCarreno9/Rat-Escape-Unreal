@@ -30,11 +30,20 @@ void UMainMenu::NativeConstruct()
 	{
 		ExitGame_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::ExitGame);
 	}
+	if (OptionsMenu_btn != nullptr)
+	{
+		OptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::OptionsMenu);
+	}
 }
 void UMainMenu::StartGame()
 {
 	// Load the desired map
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"));
+}
+void UMainMenu::OptionsMenu()
+{
+	// Load the desired map
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("OptionsMenu"));
 }
 void UMainMenu::ExitGame()
 {

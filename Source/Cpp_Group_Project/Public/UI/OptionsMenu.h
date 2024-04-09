@@ -4,30 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenu.generated.h"
+#include "OptionsMenu.generated.h"
 class UOverlay;
 class UButton;
+class USlider;
 /**
  * 
  */
 UCLASS()
-class CPP_GROUP_PROJECT_API UMainMenu : public UUserWidget
+class CPP_GROUP_PROJECT_API UOptionsMenu : public UUserWidget
 {
-
 	GENERATED_BODY()
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UOverlay> MainMenu_overlay;
+	TObjectPtr<UOverlay> OptionsMenu_overlay;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> StartGame_btn;
+	TObjectPtr<USlider> MasterVolume_slider;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> OptionsMenu_btn;
+	TObjectPtr<USlider> BackgroundVolume_slider;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> ExitGame_btn;
-
-	
-	
-
+	TObjectPtr<USlider> EffectsVolume_slider;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
+	TObjectPtr<UButton> MainMenu_btn;
 protected:
 	virtual void NativeConstruct() override;
 
@@ -35,10 +32,11 @@ protected:
 
 public:
 	UFUNCTION()
-	void StartGame();
+	void BackToMainMenu();
 	UFUNCTION()
-	void OptionsMenu();
+	void SetMasterVolume(float Volume);
 	UFUNCTION()
-	void ExitGame();
-
+	void SetBackgroundVolume(float Volume);
+	UFUNCTION()
+	void SetEffectsVolume(float Volume);
 };
