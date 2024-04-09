@@ -44,4 +44,11 @@ public:
 
     void UpdateEnabledTiles(ATileActor* ChangedTile);
 
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
+
+private: 
+    // Rotation speed (degrees per second)
+    UPROPERTY(EditAnywhere)
+    float RotationSpeed = 45.0f;
 };

@@ -8,7 +8,7 @@
 ADoorActor::ADoorActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
     DoorMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
     RootComponent = DoorMeshComponent;
@@ -68,8 +68,15 @@ void ADoorActor::UpdateEnabledTiles(ATileActor* ChangedTile)
     {
         FString DebugMessage = FString::Printf(TEXT("OMG! level is complete!"));
         GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, DebugMessage);
-        DoorMeshComponent->SetMaterial(0, DisabledMaterial);
+        DoorMeshComponent->SetMaterial(0, EnabledMaterial);
     }
+}
+
+void ADoorActor::Tick(float DeltaTime)
+{
+    FRotator NewRotation = GetActorRotation();
+    NewRotation.Yaw += RotationSpeed * DeltaTime;
+    SetActorRotation(NewRotation);
 }
 
 void ADoorActor::EnableAllTiles()
