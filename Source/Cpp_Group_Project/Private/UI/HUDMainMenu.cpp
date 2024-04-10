@@ -3,6 +3,8 @@
 
 #include "UI/HUDMainMenu.h"
 #include "Blueprint/UserWidget.h"
+#include "GameFramework/PlayerController.h"
+
 void AHUDMainMenu::BeginPlay()
 {
 	Super::BeginPlay();
@@ -17,4 +19,12 @@ void AHUDMainMenu::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("Added to Viewport"));	
 		}
 	}
+	
+	//APlayerController* Controller = GetOwningPlayerController();
+	//if (Controller != nullptr)
+	//{
+	//	Controller->bShowMouseCursor = true;
+	//	Controller->bEnableClickEvents = true;
+	//	Controller->bEnableMouseOverEvents = true;
+	//}
 }
