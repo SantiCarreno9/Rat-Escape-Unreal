@@ -56,9 +56,7 @@ class CPP_GROUP_PROJECT_API ACustomCharacter : public ACharacter
 
 	TObjectPtr<APlayerController> PlayerController;	
 
-	TObjectPtr<ACharacterHUD> CharacterHUD;
-
-	void PlayCameraTransition(AActor* TargetCamera);
+	TObjectPtr<ACharacterHUD> CharacterHUD;	
 
 
 public:
@@ -80,16 +78,12 @@ public:
 
 	FORCEINLINE bool GetIsOnAttackMode() { return bIsOnAttackMode; }
 
-	// Move on both directions
-	UFUNCTION()
+	FORCEINLINE bool GetIsOnThirdPersonView() { return bIsOnThirdPersonView; }
+	
 	void Move(FVector2D Value);
-
-	// Rotates the camera
-	UFUNCTION(BlueprintNativeEvent)
+	
 	void Look(FVector2D Value);
-
-	// Function that handles firing projectiles.
-	UFUNCTION()
+	
 	void Fire();		
 
 	void SwitchToFirstPersonPerspective();
