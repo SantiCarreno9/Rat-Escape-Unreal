@@ -4,9 +4,9 @@
 #include "UI/OptionsMenu.h"
 
 #include "Components/Overlay.h"
-#include <Kismet/GameplayStatics.h>
 #include "Components/Button.h"
 #include "Components/Slider.h"
+#include <UI/HUDMainMenu.h>
 
 void UOptionsMenu::NativePreConstruct()
 {
@@ -21,6 +21,10 @@ void UOptionsMenu::NativeConstruct()
 	if (MainMenu_btn != nullptr)
 	{
 		MainMenu_btn->OnClicked.AddUniqueDynamic(this, &UOptionsMenu::BackToMainMenu);
+	}
+	if (OptionsMenu_overlay != nullptr)
+	{
+		OptionsMenu_overlay->SetVisibility(ESlateVisibility::Visible);
 	}
 	if (MasterVolume_slider != nullptr)
 	{
@@ -37,8 +41,25 @@ void UOptionsMenu::NativeConstruct()
 }
 void UOptionsMenu::BackToMainMenu()
 {
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
+	AHUDMainMenu* MainMenuHUD = Cast<AHUDMainMenu>(GetOwningPlayer()->GetHUD());
+	if (MainMenuHUD)
+	{
+		if (MainMenuHUD->OptionsMenuWidgetClass != nullptr)
+		{
+			UUserWidget* MainMenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuHUD->WidgetClass);
+			if (MainMenuWidget)
+			{
+				// Add the options menu widget to the viewport
+				MainMenuWidget->AddToViewport();
+
+				// Remove the main menu widget from the viewport
+				if (OptionsMenu_overlay != nullptr)
+				{
+					OptionsMenu_overlay->SetVisibility(ESlateVisibility::Hidden);
+				}
+			}
+		}
+	}
 }
 void UOptionsMenu::SetMasterVolume(float Volume)
 {
