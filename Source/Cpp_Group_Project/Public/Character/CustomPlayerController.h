@@ -36,6 +36,9 @@ class CPP_GROUP_PROJECT_API ACustomPlayerController : public APlayerController
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> SwitchModeAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> PauseAction;
+
 	TObjectPtr<ACustomCharacter> Character;
 
 	UFUNCTION()
@@ -45,13 +48,13 @@ class CPP_GROUP_PROJECT_API ACustomPlayerController : public APlayerController
 	void Look(const FInputActionValue& Value);	
 
 	UFUNCTION()
-	void Fire(const FInputActionValue& Value);
+	void Fire();
 
 	UFUNCTION()
-	void SwitchCamera(const FInputActionValue& Value);
+	void SwitchCamera();
 
 	UFUNCTION()
-	void SwitchMode(const FInputActionValue& Value);
+	void SwitchMode();	
 
 protected:
 
@@ -62,4 +65,9 @@ protected:
 	virtual void OnUnPossess() override;
 	// To add mapping context
 	virtual void BeginPlay() override;
+
+public:
+
+	UFUNCTION()
+	void PauseGame();
 };

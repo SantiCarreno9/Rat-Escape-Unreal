@@ -51,6 +51,6 @@ void UMainMenu::ExitGame()
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	if (PlayerController)
 	{
-		PlayerController->ConsoleCommand("quit");
+		PlayerController->ConsoleCommand("quit");		
 	}
 }

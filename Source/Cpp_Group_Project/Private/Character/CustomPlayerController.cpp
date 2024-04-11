@@ -8,7 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 
 void ACustomPlayerController::BeginPlay()
-{
+{	
 	//Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
@@ -33,6 +33,9 @@ void ACustomPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SwitchCameraAction, ETriggerEvent::Started, this, &ACustomPlayerController::SwitchCamera);
 		//Mode Bindings
 		EnhancedInputComponent->BindAction(SwitchModeAction, ETriggerEvent::Started, this, &ACustomPlayerController::SwitchMode);
+
+		//Extra Bindings
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &ACustomPlayerController::PauseGame);
 	}
 }
 
@@ -61,20 +64,25 @@ void ACustomPlayerController::Look(const FInputActionValue& Value)
 		Character->Look(Value.Get<FVector2D>());
 }
 
-void ACustomPlayerController::Fire(const FInputActionValue& Value)
+void ACustomPlayerController::Fire()
 {
 	if (Character != nullptr)
 		Character->Fire();
 }
 
-void ACustomPlayerController::SwitchCamera(const FInputActionValue& Value)
+void ACustomPlayerController::SwitchCamera()
 {
 	if (Character != nullptr)
 		Character->SwitchCamera();
 }
 
-void ACustomPlayerController::SwitchMode(const FInputActionValue& Value)
+void ACustomPlayerController::SwitchMode()
 {
 	if (Character != nullptr)
 		Character->SwitchMode();
+}
+
+void ACustomPlayerController::PauseGame()
+{
+	SetPause(!IsPaused());
 }

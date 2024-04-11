@@ -20,6 +20,11 @@ class CPP_GROUP_PROJECT_API ACharacterHUD : public AHUD
 
 	TObjectPtr<UHUDWidget> HUDWidget;
 
+	UPROPERTY(EditAnywhere, Category = Widget, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UHUDWidget> PauseMenuClass;
+
+	TObjectPtr<UHUDWidget> PauseMenu;
+
 protected:
 	//--------METHODS--------
 	// Called when the game starts or when spawned

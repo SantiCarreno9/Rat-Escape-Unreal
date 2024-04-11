@@ -18,13 +18,5 @@ void AHUDMainMenu::BeginPlay()
 			MainMenuWidget->AddToViewport();
 			UE_LOG(LogTemp, Warning, TEXT("Added to Viewport"));	
 		}
-	}
-	
-	//APlayerController* Controller = GetOwningPlayerController();
-	//if (Controller != nullptr)
-	//{
-	//	Controller->bShowMouseCursor = true;
-	//	Controller->bEnableClickEvents = true;
-	//	Controller->bEnableMouseOverEvents = true;
-	//}
+	}	
 }
