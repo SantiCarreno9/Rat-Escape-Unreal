@@ -14,11 +14,14 @@ class CPP_GROUP_PROJECT_API AHUDMainMenu : public AHUD
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	UPROPERTY(EditAnywhere, Category = Widget, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UUserWidget> WidgetClass;
+	UPROPERTY(EditAnywhere, Category = Widget, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> OptionsMenuWidgetClass;
 	// Reference to the created widget instance
 	UUserWidget* MainMenuWidget;
+	UUserWidget* OptionsMenuWidget;
 
 	//--------METHODS--------
 	// Called when the game starts or when spawned

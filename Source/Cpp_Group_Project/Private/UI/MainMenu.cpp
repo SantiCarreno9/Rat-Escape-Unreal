@@ -42,8 +42,28 @@ void UMainMenu::StartGame()
 }
 void UMainMenu::OptionsMenu()
 {
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("OptionsMenu"));
+	//Add OptionsMenuWidget to viewport and remove MainMenuWidget
+	// Get the HUDMainMenu owning this widget
+
+	AHUDMainMenu* MainMenuHUD = Cast<AHUDMainMenu>(GetOwningPlayer()->GetHUD());
+	if (MainMenuHUD)
+	{
+		if (MainMenuHUD->OptionsMenuWidgetClass != nullptr)
+		{
+			UUserWidget* OptionsMenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuHUD->OptionsMenuWidgetClass);
+			if (OptionsMenuWidget)
+			{
+				// Add the options menu widget to the viewport
+				OptionsMenuWidget->AddToViewport();
+
+				// Remove the main menu widget from the viewport
+				if (MainMenu_overlay != nullptr)
+				{
+					MainMenu_overlay->SetVisibility(ESlateVisibility::Hidden);
+				}
+			}
+		}
+	}
 }
 void UMainMenu::ExitGame()
 {
