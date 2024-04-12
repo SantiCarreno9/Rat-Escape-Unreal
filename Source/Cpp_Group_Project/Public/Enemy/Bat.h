@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tiles/TileActor.h"
 #include "Bat.generated.h"
+
+class ABatSpawner;
 
 UCLASS()
 class CPP_GROUP_PROJECT_API ABat : public AActor
@@ -27,11 +30,13 @@ protected:
 
 private:
 	bool hasDestination;
-	FVector destination;
-
+	ATileActor* destination;
+	ABatSpawner* batSpawner;
+	FVector initialLocation;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetDestination(FVector target);
+	void InjectSpawner(ABatSpawner* spawner);
+	void SetDestination(ATileActor* tile);
 	void Kill();
 };
