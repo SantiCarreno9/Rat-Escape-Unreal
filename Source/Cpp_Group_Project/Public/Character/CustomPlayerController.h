@@ -10,6 +10,8 @@ class UInputMappingContext;
 class UInputAction;
 class ACustomCharacter;
 struct FInputActionValue;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPauseActionPerformedSignature, bool, Paused);
 /**
  *
  */
@@ -70,4 +72,7 @@ public:
 
 	UFUNCTION()
 	void PauseGame();
+
+	UPROPERTY()
+	FOnPauseActionPerformedSignature OnPaused;
 };

@@ -4,6 +4,7 @@
 #include "Character/CharacterHUD.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/HUDWidget.h"
+#include "UI/PauseMenu.h"
 
 void ACharacterHUD::BeginPlay()
 {
@@ -16,6 +17,17 @@ void ACharacterHUD::BeginPlay()
 		if (HUDWidget)
 		{
 			HUDWidget->AddToViewport();
+			UE_LOG(LogTemp, Warning, TEXT("Added to Viewport"));
+		}
+	}
+
+	if (PauseMenuClass != nullptr)
+	{
+		PauseMenu = CreateWidget<UPauseMenu>(GetWorld(), PauseMenuClass);
+		UE_LOG(LogTemp, Warning, TEXT("WidgetClass != nullptr"));
+		if (PauseMenu)
+		{
+			PauseMenu->AddToViewport();			
 			UE_LOG(LogTemp, Warning, TEXT("Added to Viewport"));
 		}
 	}

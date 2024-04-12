@@ -8,12 +8,14 @@
 #include "EnhancedInputSubsystems.h"
 
 void ACustomPlayerController::BeginPlay()
-{	
+{
 	//Add Input Mapping Context
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(MappingContext, 0);
 	}
+
+	SetInputMode(FInputModeGameOnly());
 }
 
 void ACustomPlayerController::SetupInputComponent()
@@ -84,5 +86,9 @@ void ACustomPlayerController::SwitchMode()
 
 void ACustomPlayerController::PauseGame()
 {
-	SetPause(!IsPaused());
+	bool Pause = !IsPaused();
+	SetPause(Pause);
+	if (Pause) SetInputMode(FInputModeUIOnly());
+	else SetInputMode(FInputModeGameOnly());
+	OnPaused.Broadcast(Pause);
 }

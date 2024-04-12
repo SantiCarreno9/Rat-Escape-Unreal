@@ -23,7 +23,7 @@ void UPauseMenuWidget::NativeConstruct()
 	if (MainMenuButton != nullptr)
 	{
 		MainMenuButton->OnClicked.AddUniqueDynamic(this, &UPauseMenuWidget::GoToMainMenu);
-	}	
+	}
 
 	ControllerRef = Cast<ACustomPlayerController>(GetOwningLocalPlayer());
 }
@@ -31,7 +31,7 @@ void UPauseMenuWidget::NativeConstruct()
 void UPauseMenuWidget::ResumeGame()
 {
 	if (ControllerRef != nullptr)
-		ControllerRef->SetPause(false);	
+		ControllerRef->SetPause(false);
 }
 
 void UPauseMenuWidget::GoToMainMenu()

@@ -9,7 +9,7 @@ class UOverlay;
 class UButton;
 class USlider;
 /**
- * 
+ *
  */
 UCLASS()
 class CPP_GROUP_PROJECT_API UOptionsMenu : public UUserWidget
@@ -23,16 +23,13 @@ class CPP_GROUP_PROJECT_API UOptionsMenu : public UUserWidget
 	TObjectPtr<USlider> BackgroundVolume_slider;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
 	TObjectPtr<USlider> EffectsVolume_slider;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> MainMenu_btn;
+
 protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativePreConstruct() override;
 
 public:
-	UFUNCTION()
-	void BackToMainMenu();
 	UFUNCTION()
 	void SetMasterVolume(float Volume);
 	UFUNCTION()

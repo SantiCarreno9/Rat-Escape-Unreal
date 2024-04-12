@@ -7,6 +7,7 @@
 #include "PauseMenu.generated.h"
 class UOverlay;
 class UButton;
+class ACustomPlayerController;
 /**
  * 
  */
@@ -16,19 +17,33 @@ class CPP_GROUP_PROJECT_API UPauseMenu : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UOverlay> PauseMenu_overlay;
+	TObjectPtr<UOverlay> MenuContainer;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> Resume_btn;
+	TObjectPtr<UButton> ResumeButton;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UButton> MainMenu_btn;
+	TObjectPtr<UButton> MainMenuButton;
+
+	TObjectPtr<ACustomPlayerController> ControllerRef;
+
+	void OpenMenu();
+
+	void CloseMenu();
+
+	UFUNCTION()
+	void ResumeGame();
+
+	UFUNCTION()
+	void GoToMainMenu();
+
+	UFUNCTION()
+	void ToggleMenu(bool Open);
 
 protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativePreConstruct() override;
 
-public:
-	UFUNCTION()
-	void BackToMainMenu();
-	
+
 };

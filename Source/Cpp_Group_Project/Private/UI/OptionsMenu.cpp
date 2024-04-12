@@ -17,11 +17,7 @@ void UOptionsMenu::NativePreConstruct()
 void UOptionsMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	if (MainMenu_btn != nullptr)
-	{
-		MainMenu_btn->OnClicked.AddUniqueDynamic(this, &UOptionsMenu::BackToMainMenu);
-	}
+	
 	if (OptionsMenu_overlay != nullptr)
 	{
 		OptionsMenu_overlay->SetVisibility(ESlateVisibility::Visible);
@@ -39,28 +35,7 @@ void UOptionsMenu::NativeConstruct()
 		BackgroundVolume_slider->OnValueChanged.AddDynamic(this, &UOptionsMenu::SetBackgroundVolume);
 	}
 }
-void UOptionsMenu::BackToMainMenu()
-{
-	AHUDMainMenu* MainMenuHUD = Cast<AHUDMainMenu>(GetOwningPlayer()->GetHUD());
-	if (MainMenuHUD)
-	{
-		if (MainMenuHUD->OptionsMenuWidgetClass != nullptr)
-		{
-			UUserWidget* MainMenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuHUD->WidgetClass);
-			if (MainMenuWidget)
-			{
-				// Add the options menu widget to the viewport
-				MainMenuWidget->AddToViewport();
 
-				// Remove the main menu widget from the viewport
-				if (OptionsMenu_overlay != nullptr)
-				{
-					OptionsMenu_overlay->SetVisibility(ESlateVisibility::Hidden);
-				}
-			}
-		}
-	}
-}
 void UOptionsMenu::SetMasterVolume(float Volume)
 {
 	// Set master volume here using Volume parameter

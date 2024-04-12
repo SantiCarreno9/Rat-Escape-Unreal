@@ -5,6 +5,7 @@
 #include "Components/Overlay.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/Button.h"
+#include "Character/CustomPlayerController.h"
 
 void UPauseMenu::NativePreConstruct()
 {
@@ -16,22 +17,50 @@ void UPauseMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (PauseMenu_overlay != nullptr)
+	if (ResumeButton != nullptr)
 	{
-		PauseMenu_overlay->SetVisibility(ESlateVisibility::Visible);
+		ResumeButton->OnClicked.AddUniqueDynamic(this, &UPauseMenu::ResumeGame);
 	}
-	if (MainMenu_btn != nullptr)
+	if (MainMenuButton != nullptr)
 	{
-		MainMenu_btn->OnClicked.AddUniqueDynamic(this, &UPauseMenu::BackToMainMenu);
+		MainMenuButton->OnClicked.AddUniqueDynamic(this, &UPauseMenu::GoToMainMenu);
 	}
-	if (Resume_btn != nullptr)
-	{
 
-	}
+	CloseMenu();
+
+	ControllerRef = Cast<ACustomPlayerController>(GetOwningPlayer());
+	if (ControllerRef != nullptr)
+		ControllerRef->OnPaused.AddDynamic(this, &UPauseMenu::ToggleMenu);
+
 }
 
-void UPauseMenu::BackToMainMenu()
+void UPauseMenu::OpenMenu()
 {
-	// Load the desired map
+	if (ControllerRef != nullptr)
+		ControllerRef->bShowMouseCursor = true;
+	MenuContainer->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UPauseMenu::CloseMenu()
+{
+	MenuContainer->SetVisibility(ESlateVisibility::Collapsed);
+	if (ControllerRef != nullptr)
+		ControllerRef->bShowMouseCursor = false;
+}
+
+void UPauseMenu::ResumeGame()
+{
+	if (ControllerRef != nullptr)
+		ControllerRef->PauseGame();
+}
+
+void UPauseMenu::GoToMainMenu()
+{
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
+}
+
+void UPauseMenu::ToggleMenu(bool Open)
+{
+	if (Open) OpenMenu();
+	else CloseMenu();
 }

@@ -19,58 +19,43 @@ void UMainMenu::NativeConstruct()
 	Super::NativeConstruct();
 
 	if (StartGame_btn != nullptr)
-	{
 		StartGame_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::StartGame);
-	}
-	if (MainMenu_overlay != nullptr)
-	{
-		MainMenu_overlay->SetVisibility(ESlateVisibility::Visible);
-	}
+
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Collapsed);
+
 	if (ExitGame_btn != nullptr)
-	{
 		ExitGame_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::ExitGame);
-	}
+
 	if (OptionsMenu_btn != nullptr)
-	{
-		OptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::OptionsMenu);
-	}
+		OptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::OpenSettings);
+
+	if (CloseOptionsMenu_btn != nullptr)
+		CloseOptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::CloseSettings);
 }
 void UMainMenu::StartGame()
 {
 	// Load the desired map
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"));
 }
-void UMainMenu::OptionsMenu()
-{
-	//Add OptionsMenuWidget to viewport and remove MainMenuWidget
-	// Get the HUDMainMenu owning this widget
-
-	AHUDMainMenu* MainMenuHUD = Cast<AHUDMainMenu>(GetOwningPlayer()->GetHUD());
-	if (MainMenuHUD)
-	{
-		if (MainMenuHUD->OptionsMenuWidgetClass != nullptr)
-		{
-			UUserWidget* OptionsMenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuHUD->OptionsMenuWidgetClass);
-			if (OptionsMenuWidget)
-			{
-				// Add the options menu widget to the viewport
-				OptionsMenuWidget->AddToViewport();
-
-				// Remove the main menu widget from the viewport
-				if (MainMenu_overlay != nullptr)
-				{
-					MainMenu_overlay->SetVisibility(ESlateVisibility::Hidden);
-				}
-			}
-		}
-	}
+void UMainMenu::OpenSettings()
+{	
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Visible);	
 }
+
+void UMainMenu::CloseSettings()
+{	
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Collapsed);	
+}
+
 void UMainMenu::ExitGame()
 {
 	// Quit the game
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	if (PlayerController)
 	{
-		PlayerController->ConsoleCommand("quit");		
+		PlayerController->ConsoleCommand("quit");
 	}
 }
