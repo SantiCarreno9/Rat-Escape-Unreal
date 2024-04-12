@@ -4,6 +4,7 @@
 #include "Character/Projectile.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Enemy/Bat.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -50,10 +51,12 @@ void AProjectile::FireInDirection(const FVector& ShootDirection)
 // Function that is called when the projectile hits something.
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComponent != nullptr) && OtherComponent->IsSimulatingPhysics())
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComponent != nullptr))
 	{
 		SetLifeSpan(1.0f);
+		if (ABat* Bat = Cast<ABat>(OtherActor))
+			Bat->Kill();
+
 		Destroy();
 	}
 }
