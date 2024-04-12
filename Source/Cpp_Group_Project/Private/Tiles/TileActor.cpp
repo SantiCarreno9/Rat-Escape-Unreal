@@ -27,7 +27,7 @@ void ATileActor::FindNeighbors()
 {
     FVector RayOffsets[] = { FVector(51, 0, 0), FVector(-51, 0, 0), FVector(0, 51, 0), FVector(0, -51, 0) };
     FVector RayDirections[] = { FVector(61, 0, 0), FVector(-61, 0, 0), FVector(0, 61, 0), FVector(0, -61, 0) };
-
+    Neighbors.Empty();
     for (int i = 0; i < 4; ++i)
     {
         FVector Start = GetActorLocation() + RayOffsets[i];
@@ -82,6 +82,7 @@ void ATileActor::SetEnabled()
     {
         TileState = ETileState::Enabled;
         TileMeshComponent->SetMaterial(0, TileMaterials[0]);
+        FindNeighbors();
     }
     else { SetDisabled(); }
 }

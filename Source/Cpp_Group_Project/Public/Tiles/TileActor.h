@@ -50,9 +50,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "TileLogic")
 	UStaticMeshComponent* invisibleTileMeshComponent;
 
-	UPROPERTY(EditAnywhere, Category = "TileLogic")
-	ETileState TileState;
-
 	UPROPERTY(VisibleAnywhere, Category = "TileLogic")
 	TArray<ATileActor*> Neighbors;
 
@@ -75,6 +72,9 @@ protected:
 public:	
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditAnywhere, Category = "TileLogic")
+	ETileState TileState;
 
 
 };

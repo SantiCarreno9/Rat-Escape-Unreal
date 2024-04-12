@@ -10,10 +10,16 @@ ABat::ABat()
 	PrimaryActorTick.bCanEverTick = true;
 	USkeletalMeshComponent* skeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	skeletalMeshComponent->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Art/Character/Mouse/Rat.Rat'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Art/Bat/bat.bat'"));
 	if (skeletalMesh.Succeeded()) 
 	{
 		skeletalMeshComponent->SetSkeletalMesh(skeletalMesh.Object);
+		static ConstructorHelpers::FObjectFinder<UAnimBlueprint> animBlueprint(TEXT("/Script/Engine.AnimBlueprint'/Game/Art/Bat/ABP_Bat.ABP_Bat'"));
+		if (animBlueprint.Succeeded()) 
+		{
+			skeletalMeshComponent->SetAnimInstanceClass(animBlueprint.Object->GeneratedClass);
+			skeletalMeshComponent->SetRelativeScale3D(FVector(30, 30, 30));
+		}
 	}
 }
 
@@ -21,7 +27,7 @@ ABat::ABat()
 void ABat::BeginPlay()
 {
 	Super::BeginPlay();
-	SetDestination(TestDestination);	
+	//SetDestination(TestDestination);	
 }
 
 // Called every frame
@@ -43,7 +49,7 @@ void ABat::Tick(float DeltaTime)
 	}
 
 	//Handle logic for when bat reaches the position.
-	hasDestination = false;	
+	hasDestination = false;
 }
 
 void ABat::SetDestination(FVector target) 
@@ -52,3 +58,7 @@ void ABat::SetDestination(FVector target)
 	destination = target;
 }
 
+void ABat::Kill() 
+{
+	Destroy();
+}

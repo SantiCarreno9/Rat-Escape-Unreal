@@ -4,34 +4,31 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bat.generated.h"
+#include "BatSpawner.generated.h"
 
 UCLASS()
-class CPP_GROUP_PROJECT_API ABat : public AActor
+class CPP_GROUP_PROJECT_API ABatSpawner : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABat();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bat")
-	float Speed = 20.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bat")
-	FVector TestDestination;
-
+	ABatSpawner();
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	int spawnPerSecond;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	float spawnAreaSize;
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
+	TSubclassOf<AActor> batBPToSpawn;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	bool hasDestination;
-	FVector destination;
+private:	
+	float timeAccumulator;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetDestination(FVector target);
-	void Kill();
+
 };

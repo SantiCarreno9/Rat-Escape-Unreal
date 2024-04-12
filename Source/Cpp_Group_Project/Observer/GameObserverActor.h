@@ -4,34 +4,37 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bat.generated.h"
+#include "Door/DoorActor.h"
+#include "GameObserverActor.generated.h"
 
 UCLASS()
-class CPP_GROUP_PROJECT_API ABat : public AActor
+class CPP_GROUP_PROJECT_API AGameObserverActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABat();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bat")
-	float Speed = 20.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Bat")
-	FVector TestDestination;
+	AGameObserverActor();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Function to handle door state change
+	void OnDoorStateChanged(ADoorActor* NewState);
+
 private:
-	bool hasDestination;
-	FVector destination;
+	// blueprints of the logic levels
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<AActor>> BlueprintsToDestroyAndLoad;
+
+	UPROPERTY(EditAnywhere)
+	ADoorActor* DoorBP;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetDestination(FVector target);
-	void Kill();
+
+	void FlagMessage();
+
 };
