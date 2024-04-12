@@ -35,8 +35,8 @@ void UMainMenu::NativeConstruct()
 }
 void UMainMenu::StartGame()
 {
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"));
+	// Load the desired map	
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"), true);
 }
 void UMainMenu::OpenSettings()
 {	

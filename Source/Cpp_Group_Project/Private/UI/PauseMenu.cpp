@@ -55,7 +55,7 @@ void UPauseMenu::ResumeGame()
 }
 
 void UPauseMenu::GoToMainMenu()
-{
+{	
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
 }
 
