@@ -12,15 +12,15 @@ ABat::ABat()
 	hasDestination = false;
 	USkeletalMeshComponent* skeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	skeletalMeshComponent->SetupAttachment(RootComponent);
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Art/Bat/bat.bat'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("/Game/Art/Bat/bat.bat"));
 	if (skeletalMesh.Succeeded()) 
 	{
 		skeletalMeshComponent->SetSkeletalMesh(skeletalMesh.Object);
-		static ConstructorHelpers::FObjectFinder<UAnimBlueprint> animBlueprint(TEXT("/Script/Engine.AnimBlueprint'/Game/Art/Bat/ABP_Bat.ABP_Bat'"));
-		if (animBlueprint.Succeeded())
+		static ConstructorHelpers::FObjectFinder<UClass> animBlueprint(TEXT("Class'/Game/Art/Bat/ABP_Bat.ABP_Bat_C'"));
+		if (animBlueprint.Object)
 		{
-			skeletalMeshComponent->SetAnimInstanceClass(animBlueprint.Object->GeneratedClass);
-			skeletalMeshComponent->SetRelativeScale3D(FVector(30, 30, 30));
+			skeletalMeshComponent->SetAnimInstanceClass(animBlueprint.Object);
+			skeletalMeshComponent->SetRelativeScale3D(30 * FVector(1, 1, 1));
 		}
 	}
 }

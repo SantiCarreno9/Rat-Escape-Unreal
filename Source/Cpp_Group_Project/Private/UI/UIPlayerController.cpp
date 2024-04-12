@@ -8,4 +8,5 @@ void AUIPlayerController::BeginPlay()
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+	SetInputMode(FInputModeUIOnly());
 }
