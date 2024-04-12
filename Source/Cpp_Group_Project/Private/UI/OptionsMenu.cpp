@@ -6,7 +6,6 @@
 #include "Components/Overlay.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
-#include <UI/HUDMainMenu.h>
 
 void UOptionsMenu::NativePreConstruct()
 {

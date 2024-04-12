@@ -6,7 +6,6 @@
 #include "Components/Overlay.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/Button.h"
-#include <UI/HUDMainMenu.h>
 
 void UMainMenu::NativePreConstruct()
 {
