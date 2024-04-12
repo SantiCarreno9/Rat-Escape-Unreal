@@ -19,32 +19,37 @@ void UMainMenu::NativeConstruct()
 	Super::NativeConstruct();
 
 	if (StartGame_btn != nullptr)
-	{
 		StartGame_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::StartGame);
-	}
-	if (MainMenu_overlay != nullptr)
-	{
-		MainMenu_overlay->SetVisibility(ESlateVisibility::Visible);
-	}
+
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Collapsed);
+
 	if (ExitGame_btn != nullptr)
-	{
 		ExitGame_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::ExitGame);
-	}
+
 	if (OptionsMenu_btn != nullptr)
-	{
-		OptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::OptionsMenu);
-	}
+		OptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::OpenSettings);
+
+	if (CloseOptionsMenu_btn != nullptr)
+		CloseOptionsMenu_btn->OnClicked.AddUniqueDynamic(this, &UMainMenu::CloseSettings);
 }
 void UMainMenu::StartGame()
 {
 	// Load the desired map
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"));
 }
-void UMainMenu::OptionsMenu()
-{
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("OptionsMenu"));
+void UMainMenu::OpenSettings()
+{	
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Visible);	
 }
+
+void UMainMenu::CloseSettings()
+{	
+	if (SettingsMenu != nullptr)
+		SettingsMenu->SetVisibility(ESlateVisibility::Collapsed);	
+}
+
 void UMainMenu::ExitGame()
 {
 	// Quit the game

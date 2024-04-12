@@ -4,9 +4,9 @@
 #include "UI/OptionsMenu.h"
 
 #include "Components/Overlay.h"
-#include <Kismet/GameplayStatics.h>
 #include "Components/Button.h"
 #include "Components/Slider.h"
+#include <UI/HUDMainMenu.h>
 
 void UOptionsMenu::NativePreConstruct()
 {
@@ -17,10 +17,10 @@ void UOptionsMenu::NativePreConstruct()
 void UOptionsMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	if (MainMenu_btn != nullptr)
+	
+	if (OptionsMenu_overlay != nullptr)
 	{
-		MainMenu_btn->OnClicked.AddUniqueDynamic(this, &UOptionsMenu::BackToMainMenu);
+		OptionsMenu_overlay->SetVisibility(ESlateVisibility::Visible);
 	}
 	if (MasterVolume_slider != nullptr)
 	{
@@ -35,11 +35,7 @@ void UOptionsMenu::NativeConstruct()
 		BackgroundVolume_slider->OnValueChanged.AddDynamic(this, &UOptionsMenu::SetBackgroundVolume);
 	}
 }
-void UOptionsMenu::BackToMainMenu()
-{
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
-}
+
 void UOptionsMenu::SetMasterVolume(float Volume)
 {
 	// Set master volume here using Volume parameter

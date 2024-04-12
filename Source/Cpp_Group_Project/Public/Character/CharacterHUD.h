@@ -7,6 +7,7 @@
 #include "CharacterHUD.generated.h"
 
 class UHUDWidget;
+class UPauseMenu;
 /**
  * 
  */
@@ -19,6 +20,11 @@ class CPP_GROUP_PROJECT_API ACharacterHUD : public AHUD
 	TSubclassOf<UHUDWidget> WidgetClass;
 
 	TObjectPtr<UHUDWidget> HUDWidget;
+
+	UPROPERTY(EditAnywhere, Category = Widget, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UPauseMenu> PauseMenuClass;
+
+	TObjectPtr<UPauseMenu> PauseMenu;
 
 protected:
 	//--------METHODS--------

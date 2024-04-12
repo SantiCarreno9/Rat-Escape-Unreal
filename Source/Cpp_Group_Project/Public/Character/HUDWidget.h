@@ -13,10 +13,7 @@ class UOverlay;
 UCLASS()
 class CPP_GROUP_PROJECT_API UHUDWidget : public UUserWidget
 {
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, Category = Widget, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<UHUDWidget> WidgetClass;
+	GENERATED_BODY()	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FPS, meta = (AllowPrivateAccess = "true", BindWidget))
 	TObjectPtr<UOverlay> FPS;
