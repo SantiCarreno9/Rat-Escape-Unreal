@@ -24,6 +24,13 @@ class CPP_GROUP_PROJECT_API UOptionsMenu : public UUserWidget
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
 	TObjectPtr<USlider> EffectsVolume_slider;
 
+	UPROPERTY(EditAnywhere, Category = SoundAssets, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundMix> SoundMixRef;
+	UPROPERTY(EditAnywhere, Category = SoundAssets, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundClass> SFXSoundClass;
+	UPROPERTY(EditAnywhere, Category = SoundAssets, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundClass> MusicSoundClass;
+
 protected:
 	virtual void NativeConstruct() override;
 

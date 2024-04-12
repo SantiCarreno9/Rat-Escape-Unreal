@@ -145,7 +145,7 @@ void ADoorActor::SetDoorState(EDoorState NewDoorState)
 void ADoorActor::StartLevel(int NewLevelIndex)
 {
     switch (NewLevelIndex) {
-    case 0:
+    case 0:        
         for (AActor* Tile : Tiles) {
             if (!Cast<ATileActor>(Tile)->Tags.Contains("L1")) {
                 Cast<ATileActor>(Tile)->TileState = ETileState::Disabled;
@@ -205,7 +205,7 @@ void ADoorActor::StartLevel(int NewLevelIndex)
         }
         break;
     case 6:
-
+        UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
         break;
     default:
         break;

@@ -2,7 +2,7 @@
 
 
 #include "UI/OptionsMenu.h"
-
+#include <Kismet/GameplayStatics.h>
 #include "Components/Overlay.h"
 #include "Components/Button.h"
 #include "Components/Slider.h"
@@ -16,7 +16,7 @@ void UOptionsMenu::NativePreConstruct()
 void UOptionsMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	if (OptionsMenu_overlay != nullptr)
 	{
 		OptionsMenu_overlay->SetVisibility(ESlateVisibility::Visible);
@@ -37,13 +37,17 @@ void UOptionsMenu::NativeConstruct()
 
 void UOptionsMenu::SetMasterVolume(float Volume)
 {
+	SetBackgroundVolume(Volume);
+	SetEffectsVolume(Volume);
 	// Set master volume here using Volume parameter
 }
 void UOptionsMenu::SetBackgroundVolume(float Volume)
-{
-	// Set Background volume here using Volume parameter
+{	
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMixRef, MusicSoundClass, Volume);
+	UGameplayStatics::PushSoundMixModifier(GetWorld(), SoundMixRef);
 }
 void UOptionsMenu::SetEffectsVolume(float Volume)
 {
-	// Set effects volume here using Volume parameter
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(), SoundMixRef, SFXSoundClass, Volume);
+	UGameplayStatics::PushSoundMixModifier(GetWorld(), SoundMixRef);
 }
