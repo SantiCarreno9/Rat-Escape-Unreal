@@ -2,12 +2,14 @@
 
 
 #include "Enemy/Bat.h"
+#include "Enemy/BatSpawner.h"
 
 // Sets default values
 ABat::ABat()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	hasDestination = false;
 	USkeletalMeshComponent* skeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	skeletalMeshComponent->SetupAttachment(RootComponent);
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> skeletalMesh(TEXT("/Script/Engine.SkeletalMesh'/Game/Art/Bat/bat.bat'"));
@@ -15,7 +17,7 @@ ABat::ABat()
 	{
 		skeletalMeshComponent->SetSkeletalMesh(skeletalMesh.Object);
 		static ConstructorHelpers::FObjectFinder<UAnimBlueprint> animBlueprint(TEXT("/Script/Engine.AnimBlueprint'/Game/Art/Bat/ABP_Bat.ABP_Bat'"));
-		if (animBlueprint.Succeeded()) 
+		if (animBlueprint.Succeeded())
 		{
 			skeletalMeshComponent->SetAnimInstanceClass(animBlueprint.Object->GeneratedClass);
 			skeletalMeshComponent->SetRelativeScale3D(FVector(30, 30, 30));
@@ -27,6 +29,7 @@ ABat::ABat()
 void ABat::BeginPlay()
 {
 	Super::BeginPlay();
+	initialLocation = GetActorLocation();
 	//SetDestination(TestDestination);	
 }
 
@@ -39,7 +42,8 @@ void ABat::Tick(float DeltaTime)
 		return;
 	}
 	FVector position = GetActorLocation();
-	FVector direction = destination - position;
+	FVector direction = destination == nullptr ? initialLocation - position : destination->GetActorLocation() - position;
+
 	if (direction.Length() > 10) 
 	{
 		direction.Normalize();
@@ -49,16 +53,32 @@ void ABat::Tick(float DeltaTime)
 	}
 
 	//Handle logic for when bat reaches the position.
-	hasDestination = false;
+	if (destination == nullptr)
+	{
+		destination = batSpawner->GetRandomTile();
+	}
+	else
+	{
+		if (destination->GetState() == ETileState::Enabled)
+		{
+			destination->SteppedOn();
+		}
+		destination = nullptr;
+	}
 }
 
-void ABat::SetDestination(FVector target) 
+void ABat::SetDestination(ATileActor* tile) 
 {
 	hasDestination = true;
-	destination = target;
+	destination = tile;
+}
+void ABat::InjectSpawner(ABatSpawner* spawner)
+{
+	batSpawner = spawner;
 }
 
 void ABat::Kill() 
 {
+	batSpawner->currentBatCount--;
 	Destroy();
 }
