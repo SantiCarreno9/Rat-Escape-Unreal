@@ -27,6 +27,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void Respawn(AController* ControllerRef);
 	//Called when Player character has died.
 	UFUNCTION()
 	virtual void PlayerDied(ACharacter* Character);

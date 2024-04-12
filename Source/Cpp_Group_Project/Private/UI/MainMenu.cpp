@@ -6,7 +6,6 @@
 #include "Components/Overlay.h"
 #include <Kismet/GameplayStatics.h>
 #include "Components/Button.h"
-#include <UI/HUDMainMenu.h>
 
 void UMainMenu::NativePreConstruct()
 {
@@ -35,8 +34,8 @@ void UMainMenu::NativeConstruct()
 }
 void UMainMenu::StartGame()
 {
-	// Load the desired map
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"));
+	// Load the desired map	
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Level1"), true);
 }
 void UMainMenu::OpenSettings()
 {	

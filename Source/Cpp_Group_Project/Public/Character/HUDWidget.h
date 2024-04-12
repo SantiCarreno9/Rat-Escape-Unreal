@@ -15,8 +15,16 @@ class CPP_GROUP_PROJECT_API UHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()	
 
+	bool bIsTutorialOpen = false;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FPS, meta = (AllowPrivateAccess = "true", BindWidget))
 	TObjectPtr<UOverlay> FPS;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = FPS, meta = (AllowPrivateAccess = "true", BindWidget))
+	TObjectPtr<UOverlay> TutorialScreen;
+
+	UFUNCTION()
+	void ToggleTutorial();
 
 protected:
 	virtual void NativeConstruct() override;
@@ -28,4 +36,8 @@ public:
 	void ShowFPSHUD();
 
 	void HideFPSHUD();
+
+	void ShowTutorial();
+
+	void HideTutorial();
 };

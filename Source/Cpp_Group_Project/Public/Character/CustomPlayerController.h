@@ -12,6 +12,7 @@ class ACustomCharacter;
 struct FInputActionValue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPauseActionPerformedSignature, bool, Paused);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTutorialActionPerformedSignature);
 /**
  *
  */
@@ -40,6 +41,9 @@ class CPP_GROUP_PROJECT_API ACustomPlayerController : public APlayerController
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PauseAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> TutorialAction;
 
 	TObjectPtr<ACustomCharacter> Character;
 
@@ -73,6 +77,12 @@ public:
 	UFUNCTION()
 	void PauseGame();
 
+	UFUNCTION()
+	void ToggleTutorial();
+
 	UPROPERTY()
 	FOnPauseActionPerformedSignature OnPaused;
+
+	UPROPERTY()
+	FOnTutorialActionPerformedSignature OnTutorialAction;
 };

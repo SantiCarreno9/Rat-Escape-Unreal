@@ -38,6 +38,7 @@ void ACustomPlayerController::SetupInputComponent()
 
 		//Extra Bindings
 		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &ACustomPlayerController::PauseGame);
+		EnhancedInputComponent->BindAction(TutorialAction, ETriggerEvent::Started, this, &ACustomPlayerController::ToggleTutorial);
 	}
 }
 
@@ -91,4 +92,9 @@ void ACustomPlayerController::PauseGame()
 	if (Pause) SetInputMode(FInputModeUIOnly());
 	else SetInputMode(FInputModeGameOnly());
 	OnPaused.Broadcast(Pause);
+}
+
+void ACustomPlayerController::ToggleTutorial()
+{
+	OnTutorialAction.Broadcast();
 }

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "EndingWidget.generated.h"
-class UOverlay;
+
 class UButton;
 /**
  * 
@@ -14,16 +14,12 @@ UCLASS()
 class CPP_GROUP_PROJECT_API UEndingWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
-	TObjectPtr<UOverlay> EndingContainer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", BindWidget))
 	TObjectPtr<UButton> MainMenuBtn;
 
 	UFUNCTION()
 	void GoToMainMenu();
-
 
 protected:
 	virtual void NativeConstruct() override;

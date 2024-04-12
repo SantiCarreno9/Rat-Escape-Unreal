@@ -35,18 +35,18 @@ ACustomCharacter::ACustomCharacter()
 	TPCameraBoom->SetUsingAbsoluteRotation(true);
 	TPCameraBoom->bUsePawnControlRotation = true;
 	TPCameraBoom->TargetArmLength = 300.f;
-	TPCameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
+	TPCameraBoom->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));	
 
 
 	//// Create a camera...
 	TPCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
 	TPCameraComponent->SetupAttachment(TPCameraBoom, USpringArmComponent::SocketName);
 	TPCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-	TPCameraComponent->bAutoActivate = true;
+	TPCameraComponent->bAutoActivate = true;	
 
 	//// Create dummy weapon
 	BackWeapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BackWeapon"));
-	BackWeapon->SetupAttachment(GetMesh(), TEXT("b_BackWeaponSocket"));	
+	BackWeapon->SetupAttachment(GetMesh(), TEXT("b_BackWeaponSocket"));
 }
 
 
@@ -118,7 +118,7 @@ void ACustomCharacter::SwitchToThirdPersonPerspective()
 	TPCameraComponent->SetActive(bIsOnThirdPersonView);
 	GetMesh()->UnHideBoneByName(HeadBoneName);
 	if (bIsOnAttackMode && CharacterHUD != nullptr)
-		CharacterHUD->HideFPSHUD();	
+		CharacterHUD->HideFPSHUD();
 }
 
 void ACustomCharacter::Falling()
@@ -175,7 +175,8 @@ void ACustomCharacter::Destroyed()
 	{
 		if (ACustomGameModeBase* GameMode = Cast<ACustomGameModeBase>(World->GetAuthGameMode()))
 		{
-			GameMode->GetOnPlayerDied().Broadcast(this);
+			if (GameMode->GetOnPlayerDied().IsBound())
+				GameMode->GetOnPlayerDied().Broadcast(this);
 		}
 	}
 	Super::Destroyed();

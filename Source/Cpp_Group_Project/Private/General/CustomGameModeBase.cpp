@@ -16,23 +16,27 @@ void ACustomGameModeBase::BeginPlay()
 	}
 }
 
+void ACustomGameModeBase::Respawn(AController* ControllerRef)
+{
+	if (ControllerRef != nullptr)
+		RestartPlayer(ControllerRef);
+}
+
 void ACustomGameModeBase::RestartPlayer(AController* NewPlayer)
 {
-	Super::RestartPlayer(NewPlayer);	
+	Super::RestartPlayer(NewPlayer);
 }
 
 void ACustomGameModeBase::PlayerDied(ACharacter* Character)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Character %s"), *Character->GetName());
-	//Get a reference to our Character's Player Controller
-	AController* CharacterController = Character->GetController();
-
-	TFunction<void()> OnDelayLambda = [this, CharacterController]() {
-		RestartPlayer(CharacterController);		
-		};
-	FTimerHandle TimerHandle;
-	FTimerDelegate TimerDelegate;
-	TimerDelegate.BindLambda(OnDelayLambda);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, RespawnTime, false);
-	RestartPlayer(CharacterController);	
+	//Get a reference to our Character's Player Controller	
+	UWorld* World = GetWorld();
+	if (World != nullptr)
+	{
+		AController* CharacterController = Character->GetController();		
+		FTimerHandle TimerHandle;
+		FTimerDelegate TimerDelegate;		
+		TimerDelegate.BindUFunction(this, "Respawn", CharacterController);
+		World->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, RespawnTime, false);		
+	}
 }

@@ -31,6 +31,7 @@ void ACharacterHUD::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("Added to Viewport"));
 		}
 	}
+	
 }
 
 void ACharacterHUD::ShowFPSHUD()
