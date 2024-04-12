@@ -204,6 +204,9 @@ void ADoorActor::StartLevel(int NewLevelIndex)
             else { Cast<ATileActor>(Tile)->SetEnabled(); }
         }
         break;
+    case 6:
+
+        break;
     default:
         break;
     }
