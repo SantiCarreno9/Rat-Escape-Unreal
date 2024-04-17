@@ -40,11 +40,7 @@ void UCustomCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsOnAttackMode = Character->GetIsOnAttackMode();
 	Speed = Character->GetVelocity().Length();	
 
-	if (bIsOnThirdPersonView)
-	{
-		Pitch = 0;
-		return;
-	}		
+	
 
 	const FRotator DeltaRotator = Character->GetBaseAimRotation() - Character->GetActorRotation();
 	Pitch = DeltaRotator.Pitch;

@@ -205,7 +205,7 @@ void ADoorActor::StartLevel(int NewLevelIndex)
         }
         break;
     case 6:
-        UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
+        UGameplayStatics::OpenLevel(GetWorld(), TEXT("Congratulations"));
         break;
     default:
         break;
